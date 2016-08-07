@@ -33,7 +33,7 @@ display_width = int(display_width_s)
 #display_width = 1280
 #display_height = 720
 car_width = 100
-version = "1.0"
+version = "1.2"
 
 #colors
 black = (0,0,0)
@@ -41,6 +41,9 @@ white = (255,255,255)
 red = (255,0,0)
 green = (0,255,0)
 blue = (0,0,255)
+
+green2 = (0,200,0)
+red2 = (200,0,0)
 
 print("Hello!")
 print("setting up window")
@@ -59,6 +62,9 @@ def objects_dodged(count):
         font = pygame.font.Font("freesansbold.ttf", 20)
         text = font.render("Dodged: " + str(count), True, black)
         gameDisplay.blit(text, (0, 50))
+def quitGame():
+        pygame.quit()
+        quit(0)
 
 def object(objectX, objectY, objectW, objectH, color):
         pygame.draw.rect(gameDisplay, color, [objectX, objectY, objectW, objectH])
@@ -94,6 +100,42 @@ def crash():
         message_display_cornerd("Deaths: " + str(deaths), 20)
         message_display("You crashed! :(", 115)
         game_loop()
+def button(msg, x, y, w, h, iColor, aColor, action=None):
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+        if x + w > mouse[0] > x and y+h > mouse[1] > y:
+                pygame.draw.rect(gameDisplay, aColor, (x,y,w,h))
+                if click[0] == 1 and action != None:
+                        #sloopy, not good :/
+                        action()
+                                
+        else:
+                pygame.draw.rect(gameDisplay, iColor, (x,y,w,h))
+
+        smallText = pygame.font.Font("freesansbold.ttf", 20)
+        textSurf, textRect = text_objects(msg, smallText)
+        textRect.center = ( (x+(w/2)), (y+(h/2)))
+        gameDisplay.blit(textSurf, textRect)
+
+def game_intro():
+        intro = True
+        while intro:
+                for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                                pygame.quit()
+                                quit(0)
+                                
+                gameDisplay.fill(white)
+                largeText = pygame.font.Font('freesansbold.ttf', 115)
+                TextSurf, TextRect = text_objects("Boat Box Fall", largeText)
+                TextRect.center = ((display_width/2),(display_height/2))
+                gameDisplay.blit(TextSurf, TextRect)
+
+                button("PLAY", display_width/2-100,display_height/2+100,100,50, green, green2, game_loop)
+                button("QUIT", display_width/2+150,display_height/2+100,100,50, red, red2, quitGame)
+                
+                pygame.display.update()
+                clock.tick(120)
 
 def game_loop():
         x = (display_width * 0.45)
@@ -180,6 +222,7 @@ def game_loop():
                 pygame.display.update()
                 clock.tick(60)
 deaths = 0
+game_intro()
 game_loop()
 pygame.quit()
 quit(0)
