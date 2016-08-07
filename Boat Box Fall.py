@@ -33,6 +33,7 @@ display_width = int(display_width_s)
 #display_width = 1280
 #display_height = 720
 car_width = 100
+version = "1.0"
 
 #colors
 black = (0,0,0)
@@ -80,7 +81,7 @@ def message_display(text, size):
 def message_display_corner(text, size):
         largeText = pygame.font.Font('freesansbold.ttf', size)
         TextSurf, TextRect = text_objects(text, largeText)
-        TextRect.center = (115,15)
+        TextRect.center = (130,15)
         gameDisplay.blit(TextSurf, TextRect)
 def message_display_cornerd(text, size):
         largeText = pygame.font.Font('freesansbold.ttf', size)
@@ -173,7 +174,7 @@ def game_loop():
                                 print("Deaths: " + str(deaths))
                                 crash()
 
-                message_display_corner("Made by Vilhelm Prytz.", 20)
+                message_display_corner("Made by Vilhelm Prytz " + version, 20)
                 message_display_cornerd("Deaths: " + str(deaths), 20)
                 
                 pygame.display.update()
